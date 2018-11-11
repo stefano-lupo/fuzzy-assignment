@@ -1,35 +1,37 @@
 import numpy as np
 import skfuzzy as fz
-from enum import Enum
+from skfuzzy import control as ctrl
+
+zero_ten_universe = np.arange(0, 11, 1)
 
 inputs = ['clothes_type', 'dirt_type', 'dirtiness']
 output = 'washing_time'
 
-def get_membership_functions(ctrl):
-	return clothes_type_mf(ctrl), dirt_type_mf(ctrl), dirtiness_mf(ctrl), washing_time_mf(ctrl)
+def get_membership_functions():
+	return clothes_type_mf(), dirt_type_mf(), dirtiness_mf(), washing_time_mf()
 
-def clothes_type_mf(ctrl):
+def clothes_type_mf():
 	clothes_type = ctrl.Antecedent(np.arange(0, 11, 1), 'clothes_type')
 	clothes_type['silk'] = fz.trapmf(clothes_type.universe, [0, 0, 3, 5])
 	clothes_type['woolen'] = fz.trimf(clothes_type.universe, [3, 5, 7])
 	clothes_type['cotton'] = fz.trapmf(clothes_type.universe, [5, 8, 10, 10])
 	return clothes_type
 
-def dirt_type_mf(ctrl):
+def dirt_type_mf():
 	dirt_type = ctrl.Antecedent(np.arange(0, 11, 1), 'dirt_type')
 	dirt_type['not_greasy'] = fz.trapmf(dirt_type.universe, [0, 0, 3, 5])
 	dirt_type['medium'] = fz.trimf(dirt_type.universe, [3, 5, 7])
 	dirt_type['greasy'] = fz.trapmf(dirt_type.universe, [5, 8, 10, 10])
 	return dirt_type
 
-def dirtiness_mf(ctrl):
+def dirtiness_mf():
 	dirtiness = ctrl.Antecedent(np.arange(0, 11, 1), 'dirtiness')
-	dirtiness['small'] = fz.trapmf(dirtiness.universe, [0, 0, 3, 5])
+	dirtiness['low'] = fz.trapmf(dirtiness.universe, [0, 0, 3, 5])
 	dirtiness['medium'] = fz.trimf(dirtiness.universe, [4, 5, 6])
-	dirtiness['large'] = fz.trapmf(dirtiness.universe, [5, 8, 10, 10])
+	dirtiness['high'] = fz.trapmf(dirtiness.universe, [5, 8, 10, 10])
 	return dirtiness
 
-def washing_time_mf(ctrl):
+def washing_time_mf():
 	washing_time = ctrl.Consequent(np.arange(0, 121, 1), 'washing_time')
 	washing_time['very_short'] = fz.trapmf(washing_time.universe, [0, 0, 20, 40])
 	washing_time['short'] = fz.trimf(washing_time.universe, [20, 40, 60])

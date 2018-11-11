@@ -59,17 +59,59 @@ def run_sim(control):
 
 	plt.show()
 
+def run_sample(membership_funcs):
+	uni = np.arange(0, 121, 1)
+	wt_med = fz.trimf(uni, [50, 60, 70])
+	wt_long = fz.trimf(uni, [60, 80, 100])
+
+	med_alpha = 0.25
+	long_alpha = 0.5
+	wt_med_alpha = [min(y, med_alpha) for y in wt_med]
+	wt_long_alpha = [min(y, long_alpha) for y in wt_long]
+
+	plt.plot(uni, wt_med, label='no cut')
+	plt.plot(uni, wt_med_alpha, label='α = 0.25')
+	plt.title('wash_time = medium, alpha cut, α = 0.25')
+	plt.xlabel('Wash Time (mins)')
+	plt.ylabel('Membership')
+	plt.legend()
+	plt.show()
+
+	plt.plot(uni, wt_long, label='no cut')
+	plt.plot(uni, wt_long_alpha, label='α = 0.5')
+	plt.title('wash_time = long, alpha cut, α = 0.5')
+	plt.xlabel('Wash Time (mins)')
+	plt.ylabel('Membership')
+	plt.legend()
+	plt.show()
+
+	combined = [max(x, y) for (x,y) in zip (wt_med_alpha, wt_long_alpha)]
+	plt.plot(uni, combined, label='wash_time')
+	plt.title('Composed Wash Time MF')
+	plt.xlabel('Wash Time (mins)')
+	plt.ylabel('Membership')
+	plt.legend(loc='upper left')
+	plt.show()
 
 
 
 
 
 # Input membership functions
-membership_funcs = mfs.get_membership_functions(ctrl)
-rules = rg.gen_rules(membership_funcs, ctrl)
+membership_funcs = mfs.get_membership_functions()
 
-# Create our controller
-control = ctrl.ControlSystem(rules=rules)
-print(get_washing_time(control, dirtiness=4, dirt_type=4, clothes_type=4))
+run_sample(membership_funcs)
 
-run_sim(control)
+# # # Read and build rules from rulese
+# rules = rg.gen_rules(membership_funcs, ctrl)
+
+# # # Create our controller
+# control = ctrl.ControlSystem(rules=rules)
+
+# # Do a sample calculation
+# print(get_washing_time(control, dirtiness=4, dirt_type=4, clothes_type=4))
+
+# # Generate surface plots
+# run_sim(control)
+
+
