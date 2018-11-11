@@ -1,35 +1,46 @@
 import numpy as np
 import skfuzzy as fz
 from skfuzzy import control as ctrl
+from enum import Enum
+
+inputs = ['clothes_type', 'dirt_type', 'dirtiness']
+output = 'washing_time'
 
 def get_membership_functions():
-	# return cpu_temp_mf(), cpu_usage_mf(), del_cpu_temp_mf(), fan_speed_mf()
-	return cpu_temp_mf(), del_cpu_temp_mf(), fan_speed_mf()
+	return clothes_type_mf(), dirt_type_mf(), dirtiness_mf(), washing_time_mf()
 
-def cpu_temp_mf():
-	cpu_temp = ctrl.Antecedent(np.arange(0, 101, 1), 'cpu_temp')
-	cpu_temp['l'] = fz.trapmf(cpu_temp.universe, [0, 0, 20, 40])
-	cpu_temp['m'] = fz.trimf(cpu_temp.universe, [30, 55, 65])
-	cpu_temp['h'] = fz.trapmf(cpu_temp.universe, [60, 80, 100, 100])
-	return cpu_temp
+def clothes_type_mf():
+	clothes_type = ctrl.Antecedent(np.arange(0, 11, 1), 'clothes_type')
+	clothes_type['silk'] = fz.trapmf(clothes_type.universe, [0, 0, 3, 5])
+	clothes_type['woolen'] = fz.trimf(clothes_type.universe, [3, 5, 7])
+	clothes_type['cotton'] = fz.trapmf(clothes_type.universe, [5, 8, 10, 10])
+	return clothes_type
 
-# def cpu_usage_mf():
-# 	cpu_usage = ctrl.Antecedent(np.arange(0, 101, 1), 'cpu_usage')
-# 	cpu_usage['l'] = fz.trapmf(cpu_usage.universe, [0, 0, 25, 50])
-# 	cpu_usage['m'] = fz.trimf(cpu_usage.universe, [40, 50, 65])
-# 	cpu_usage['h'] = fz.trapmf(cpu_usage.universe, [60, 80, 100, 100])
-# 	return cpu_usage
+def dirt_type_mf():
+	dirt_type = ctrl.Antecedent(np.arange(0, 11, 1), 'dirt_type')
+	dirt_type['not_greasy'] = fz.trapmf(dirt_type.universe, [0, 0, 3, 5])
+	dirt_type['medium'] = fz.trimf(dirt_type.universe, [3, 5, 7])
+	dirt_type['greasy'] = fz.trapmf(dirt_type.universe, [5, 8, 10, 10])
+	return dirt_type
 
-def del_cpu_temp_mf():
-	del_cpu_temp = ctrl.Antecedent(np.arange(-4, 5, 1), 'del_cpu_temp')
-	del_cpu_temp['cooling'] = fz.trapmf(del_cpu_temp.universe, [-4, -4, -2, 0])
-	del_cpu_temp['no_change'] = fz.trimf(del_cpu_temp.universe, [-1, 0, 1])
-	del_cpu_temp['warming'] = fz.trapmf(del_cpu_temp.universe, [0, 2, 4, 4])
-	return del_cpu_temp
+def dirtiness_mf():
+	dirtiness = ctrl.Consequent(np.arange(0, 11, 1), 'dirtiness')
+	dirtiness['small'] = fz.trapmf(dirtiness.universe, [0, 0, 3, 5])
+	dirtiness['medium'] = fz.trimf(dirtiness.universe, [4, 5, 6])
+	dirtiness['large'] = fz.trapmf(dirtiness.universe, [5, 8, 10, 10])
+	return dirtiness
 
-def fan_speed_mf():
-	fan_speed = ctrl.Consequent(np.arange(0, 101, 1), 'fan_speed')
-	fan_speed['l'] = fz.trapmf(fan_speed.universe, [0, 0, 20,40])
-	fan_speed['m'] = fz.trimf(fan_speed.universe, [30, 50, 70])
-	fan_speed['h'] = fz.trapmf(fan_speed.universe, [60, 80, 100, 100])
-	return fan_speed
+def washing_time_mf():
+	washing_time = ctrl.Consequent(np.arange(0, 121, 1), 'washing_time')
+	washing_time['very_short'] = fz.trapmf(washing_time.universe, [0, 0, 20, 40])
+	washing_time['short'] = fz.trimf(washing_time.universe, [20, 40, 60])
+	washing_time['medium'] = fz.trimf(washing_time.universe, [50, 60, 70])
+	washing_time['long'] = fz.trimf(washing_time.universe, [60, 80, 100])
+	washing_time['very_long'] = fz.trapmf(washing_time.universe, [80, 100, 120, 120])
+	return washing_time
+
+# clothes_type_mf().view()
+# dirt_type_mf().view()
+# dirtiness_mf().view()
+# washing_time_mf().view()
+# input("Enter.")
