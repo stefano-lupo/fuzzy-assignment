@@ -17,11 +17,11 @@ def plotMfs():
 
 # Get result of fuzzy logic model from inputs and model
 def get_output_speed(control, input_values):
-	data = zip(mfs.inputs, input_values)
+	zipped = list(zip(mfs.inputs, input_values))
 	control_simulation = ctrl.ControlSystemSimulation(control)
 
-	for input in inputs:
-		control_simulation.input[data[0]] = data[1]
+	for pair in zipped:
+		control_simulation.input[pair[0]] = pair[1]
 
 	control_simulation.compute()
 	return control_simulation.output[mfs.output]
@@ -29,8 +29,9 @@ def get_output_speed(control, input_values):
 # Run an entire simulation
 def run_sim(control):
 	num_points_per_input_val = 50
-	temps = np.linspace(1, 100, num_points_per_input_val)
-	del_temps = np.linspace(-4, 4, num_points_per_input_val)
+	clothes_type = np.linspace(1, 100, num_points_per_input_val)
+	dirt_type = np.linspace(-4, 4, num_points_per_input_val)
+	dirtiness = np.linspace(-4, 4, num_points_per_input_val)
 
 	X, Y = np.meshgrid(temps, del_temps)
 	output_speeds = np.array([get_output_speed(control, temp, del_temp) for temp, del_temp in zip(np.ravel(X), np.ravel(Y))])
@@ -47,13 +48,10 @@ def run_sim(control):
 
 
 # Input membership functions
-mfs = mfs.get_membership_functions()
-rules = rg.gen_rules(mfs)
+membership_funcs = mfs.get_membership_functions(ctrl)
+rules = rg.gen_rules(membership_funcs, ctrl)
 
-# Create our fan control using supplied rules and membership functions
-for rule in rules:
-	print(rule)
-	print()
+# Create our controller
 control = ctrl.ControlSystem(rules=rules)
 print(get_output_speed(control, [4, 4, 4]))
 
