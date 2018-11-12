@@ -1,2 +1,0 @@
-['clothes_type', 'dirt_type', 'dirtiness']
-None
