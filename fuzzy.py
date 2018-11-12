@@ -4,6 +4,14 @@ import matplotlib.pyplot as plt
 import skfuzzy as fz
 from skfuzzy import control as ctrl
 
+import matplotlib.pylab as pylab
+params = {'legend.fontsize': 'x-large',
+         'axes.labelsize': 'x-large',
+         'axes.titlesize':'x-large',
+         'xtick.labelsize':'x-large',
+         'ytick.labelsize':'x-large'}
+pylab.rcParams.update(params)
+
 # exec(open("filename.py").read())
 
 # Custom scripts
@@ -33,7 +41,7 @@ def plot_surface(X, Y, Z, x_label, y_label, z_label='Wash Time'):
 	
 
 # Generate all input / output surface plots
-def run_sim(control):
+def generate_surface_plots(control):
 	num_points_per_input_val = 20
 	clothes_type = np.linspace(0, 10, num_points_per_input_val)
 	dirt_type = np.linspace(0, 10, num_points_per_input_val)
@@ -93,25 +101,25 @@ def run_sample(membership_funcs):
 	plt.legend(loc='upper left')
 	plt.show()
 
+	print("Final Value: ", fz.defuzz(uni, np.array(combined), 'mom'))
 
 
 
+# Show the membership functions in use.
+mfs.show_mfs()
 
 # Input membership functions
 membership_funcs = mfs.get_membership_functions()
 
+# Run the single sample simulation as described in the report.
 run_sample(membership_funcs)
 
-# # # Read and build rules from rulese
-# rules = rg.gen_rules(membership_funcs, ctrl)
+# Read and build rules from rulese
+rules = rg.gen_rules(membership_funcs, ctrl)
 
-# # # Create our controller
-# control = ctrl.ControlSystem(rules=rules)
+# Create our controller
+control = ctrl.ControlSystem(rules=rules)
 
-# # Do a sample calculation
-# print(get_washing_time(control, dirtiness=4, dirt_type=4, clothes_type=4))
-
-# # Generate surface plots
-# run_sim(control)
-
+# Generate surface plots
+generate_surface_plots(control)
 

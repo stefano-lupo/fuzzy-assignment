@@ -40,8 +40,9 @@ def washing_time_mf():
 	washing_time['very_long'] = fz.trapmf(washing_time.universe, [80, 100, 120, 120])
 	return washing_time
 
-# clothes_type_mf().view()
-# dirt_type_mf().view()
-# dirtiness_mf().view()
-# washing_time_mf().view()
-# input("Enter.")
+def show_mfs():
+	clothes_type_mf().view()
+	dirt_type_mf().view()
+	dirtiness_mf().view()
+	washing_time_mf().view()
+	input("Enter.")
