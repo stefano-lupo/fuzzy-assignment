@@ -1,8 +1,16 @@
 # Fuzzy Logic Group Assignment
-- ~Using Python 3.7~ Scikit fuzzy was giving me issues on 3.7, so using 3.6.7
+- Stefano Lupo - 14334933
+- Rowan Sutton - 13330793
+- Yash Mundra - 16338461
+
+## File Descriptions
+- `fuzzy.py` contains the entry point to the program
+- `membership_funcs.py` contains the definitions of each of the membership functions used
+- `rule_gen.py` contains functions which aided in reading / parsing the rulebase found in `rulebase.txt`
+- `rulebase.txt` contains the rules for the fuzzy controller
 
 
-## Running Stuff
+## Running The Program
 - Need to `pip install pipenv` if you don't already have it
 - Then just `pipenv install` to grab deps
 - Then `pipenv run python <script>` or `pipenv shell`
